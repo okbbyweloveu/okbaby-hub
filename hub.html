@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="hub">
-    <!-- FIXED MENU ON THE RIGHT CON CREDITS -->
+    <!-- FIXED MENU ON THE RIGHT WITH CREDITS -->
     <nav class="sidebar">
         <a href="#links">My Links</a>
         <a href="#about">About Baby</a>
         <a href="#music">Music</a>
         <a href="#quiz">Quiz</a>
-        <a href="#fanarts">Fan Arts</a>
-        <a href="#credits">Credits</a> <!-- NUEVO BOTON -->
+        <a href="#credits">Credits</a>
         <a href="index.html" class="volver">Back</a>
     </nav>
 
@@ -34,7 +33,7 @@
         </div>
     </section>
 
-    <!-- SECTION 3: ABOUT BABY BORROSO -->
+    <!-- SECTION 3: ABOUT BABY BLURRED -->
     <section id="about" class="seccion">
         <h2>ABOUT BABY</h2>
         <div class="about-box locked">
@@ -95,45 +94,18 @@
         </div>
     </section>
 
-    <!-- SECTION 5: QUIZ CON CANDADO -->
+    <!-- SECTION 5: QUIZ WITH LOCK -->
     <section id="quiz" class="seccion">
         <h2>OKBABY QUIZ 💅</h2>
         <div class="quiz-box">
-            <p>¿Qué tan real fan de OKBABY eres?</p>
+            <p>How big of an OKBABY fan are you?</p>
             <button class="btn-quiz locked" disabled>
                 🔒 COMING SOON
             </button>
         </div>
     </section>
 
-    <!-- SECTION 6: FAN ARTS 4x3 -->
-    <section id="fanarts" class="seccion">
-        <h2>Fan Arts 💖</h2>
-        <p style="margin-bottom: 40px;">Sube tu arte de OKBABY y aparece aquí</p>
-        <div class="fanart-grid">
-            <div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div>
-            <div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div>
-            <div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div>
-            <div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div><div class="fanart-slot"><span>+</span></div>
-        </div>
-        <button class="btn-quiz" onclick="document.getElementById('upload-form').style.display='flex'">
-            📤 SUBIR MI FAN ART
-        </button>
-        <div id="upload-form" class="upload-popup">
-            <div class="upload-box">
-                <h3>Sube tu Fan Art</h3>
-                <input type="text" placeholder="Tu nombre de usuario" required>
-                <input type="email" placeholder="Tu Gmail" required>
-                <input type="file" accept="image/*" required>
-                <div class="upload-botones">
-                    <button type="submit" class="btn-escuchar">ENVIAR</button>
-                    <button type="button" class="btn-volver" onclick="document.getElementById('upload-form').style.display='none'">CANCELAR</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 7: CREDITS -->
+    <!-- SECTION 6: CREDITS -->
     <section id="credits" class="seccion credits">
         <h2>CREDITS</h2>
         <h3>YEPOST</h3>
