@@ -6,22 +6,11 @@
     <title>OKBABY</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="portada">
-    <header>
+<body class="landing">
+    <div class="landing-container">
         <h1>OKBABY</h1>
-        <h2>Artist / Music / Community</h2>
-        <a href="hub.html" class="btn">ENTER THE HUB →</a>
-    </header>
-
-    <script>
-        document.querySelector('.btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            const link = this.href;
-            document.body.classList.add('fade-out');
-            setTimeout(function() {
-                window.location = link;
-            }, 500);
-        });
-    </script>
+        <p>Artist / Music / Community</p>
+        <a href="hub.html" class="btn-enter">ENTER THE HUB →</a>
+    </div>
 </body>
 </html>
