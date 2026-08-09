@@ -162,4 +162,40 @@ body.fade-out {opacity: 0;}
     font-size: 20px;
     color: #00FFFF;
     font-family: Arial;
+}/* LANDING PAGE */
+.landing {
+    background: #FF0055;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.landing-container h1 {
+    font-size: 80px;
+    margin: 0;
+    letter-spacing: 5px;
+}
+
+.landing-container p {
+    font-size: 20px;
+    margin: 10px 0 40px 0;
+}
+
+.btn-enter {
+    background: white;
+    color: #FF0055;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 50px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn-enter:hover {
+    transform: scale(1.1);
 }
