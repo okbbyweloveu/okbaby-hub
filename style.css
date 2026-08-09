@@ -1,0 +1,165 @@
+* {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial Black', Arial, sans-serif;}
+html {scroll-behavior: smooth;}
+body {background: #FF0055; color: white; transition: opacity 0.5s ease;}
+body.fade-out {opacity: 0;}
+
+.sidebar {position: fixed; right: 30px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 15px; z-index: 100;}
+.sidebar a {background: #8B0033; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; text-align: center; font-size: 14px; transition: 0.3s;}
+.sidebar a:hover {background: #FF00FF; transform: scale(1.1); box-shadow: 0 0 15px #FF00FF;}
+.sidebar .volver {background: transparent; border: 2px solid white;}
+
+.seccion {min-height: 100vh; padding: 100px 50px; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.seccion h1 {font-size: 80px; text-align: center; line-height: 1; text-shadow: 5px 5px 0px #8B0033;}
+.seccion h2 {font-size: 50px; margin-bottom: 40px; color: #00FFFF; text-shadow: 3px 3px 0px #8B0033;}
+
+.botones-links {display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;}
+.botones-links a {background: #8B0033; color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 18px; transition: 0.3s;}
+.botones-links a:hover {background: #FF00FF; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3);}
+
+.abc {text-align: center; margin: 40px 0; grid-column: 1 / -1;}
+.abc a {color: #00FFFF; text-decoration: none; font-weight: bold; font-size: 22px; margin: 0 10px; transition: 0.3s;}
+.abc a:hover {color: #FF00FF; text-shadow: 0 0 10px #FF00FF;}
+
+.letra-seccion {margin-top: 60px; padding-top: 30px; border-top: 3px solid #00FFFF; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1200px;}
+.letra-seccion h3 {grid-column: 1 / -1; font-size: 60px; color: #FF00FF; margin-bottom: 20px; text-align: center; text-shadow: 3px 3px 0px #8B0033;}
+
+.cancion {background: #8B0033; padding: 20px; border-radius: 20px; text-align: center; transition: 0.3s;}
+.cancion:hover {transform: scale(1.05); box-shadow: 0 0 20px #FF00FF;}
+.cancion img {width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; margin-bottom: 10px; border: 3px solid #FF00FF;}
+.cancion h4 {color: white; font-size: 16px; margin: 10px 0; text-transform: uppercase;}
+.btn-escuchar {background: #FFD700; color: black; padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; width: 100%;}
+.btn-escuchar:hover {background: #00FFFF; color: black;}
+
+.about-box {display: flex; gap: 40px; background: #8B0033; padding: 40px; border-radius: 30px; max-width: 900px; align-items: center; position: relative;}
+.about-box img {width: 300px; border-radius: 20px; border: 5px solid #FF00FF;}
+.about-text h3 {font-size: 40px; color: #FFD700; margin-bottom: 15px;}
+.about-text p {font-size: 18px; line-height: 1.8;}
+
+/* ABOUT BLOQUEADO */
+.about-box.locked {
+    filter: blur(8px);
+    pointer-events: none;
+}
+.about-box.locked::after {
+    content: "COMING SOON";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #FFD700;
+    font-weight: bold;
+    text-shadow: 0 0 20px #FF00FF;
+    z-index: 10;
+}
+
+.quiz-box {background: #8B0033; padding: 50px; border-radius: 30px; text-align: center; max-width: 600px;}
+.btn-quiz {background: #FF00FF; color: white; border: none; padding: 20px 50px; font-size: 20px; font-weight: bold; border-radius: 50px; cursor: pointer; margin-top: 20px; transition: 0.3s;}
+.btn-quiz:hover {background: #00FFFF; color: black; transform: scale(1.1);}
+.btn-quiz.locked {background: #555; color: #aaa; cursor: not-allowed; transform: none !important;}
+.btn-quiz.locked:hover {background: #555; box-shadow: none;}
+
+@media (max-width: 768px) {
+    .letra-seccion {grid-template-columns: 1fr;}
+    .seccion h1 {font-size: 40px;}
+    .sidebar {right: 10px;}
+    .about-box {flex-direction: column;}
+    .about-box.locked::after {font-size: 25px;}
+}/* FAN ARTS GRID 4x3 */
+.fanart-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 40px;
+}
+.fanart-slot {
+    aspect-ratio: 1/1;
+    background: #8B0033;
+    border: 3px dashed #FF00FF;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    color: #FF00FF;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.fanart-slot:hover {
+    background: #FF00FF;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #FF00FF;
+}
+
+/* POPUP SUBIR */
+.upload-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+.upload-box {
+    background: #8B0033;
+    padding: 40px;
+    border-radius: 30px;
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 3px solid #FF00FF;
+}
+.upload-box h3 {font-size: 30px; color: #FFD700; text-align: center;}
+.upload-box input {
+    padding: 15px;
+    border-radius: 15px;
+    border: none;
+    background: #FF0055;
+    color: white;
+    font-size: 16px;
+    font-family: Arial;
+}
+.upload-box input::placeholder {color: #FFB3D1;}
+.upload-botones {display: flex; gap: 15px;}
+.btn-volver {background: #555; color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%;}
+.btn-volver:hover {background: #777;}
+/* CREDITS */
+.credits {
+    min-height: 50vh;
+    background: #000;
+}
+.credits h3 {
+    font-size: 60px;
+    color: #FF00FF;
+    text-shadow: 0 0 20px #FF00FF;
+    margin-bottom: 10px;
+}
+.credits p {
+    font-size: 20px;
+    color: #00FFFF;
+    font-family: Arial;
+}/* CREDITS */
+.credits {
+    min-height: 50vh;
+    background: #000;
+}
+.credits h3 {
+    font-size: 60px;
+    color: #FF00FF;
+    text-shadow: 0 0 20px #FF00FF;
+    margin-bottom: 10px;
+}
+.credits p {
+    font-size: 20px;
+    color: #00FFFF;
+    font-family: Arial;
+}
