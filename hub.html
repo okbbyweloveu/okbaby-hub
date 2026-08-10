@@ -15,6 +15,7 @@
         <a href="#about">About Baby</a>
         <a href="#music">Music</a>
         <a href="#quiz">Quiz</a>
+        <a href="#fan-arts">Fan Arts</a>
         <a href="#credits">Credits</a>
         <a href="index.html" class="volver">Back</a>
     </nav>
@@ -321,6 +322,44 @@
     </section>
 
 
+    <!-- SECTION 5.2: FAN ARTS -->
+    <section id="fan-arts" class="seccion">
+
+        <h2>FAN ARTS</h2>
+
+        <div class="fan-art-upload">
+
+            <p>Share your OKBABY fan art with the community.</p>
+
+            <input
+                type="text"
+                id="fan-username"
+                placeholder="@yourusername"
+                maxlength="30"
+            >
+
+            <input
+                type="file"
+                id="fan-image"
+                accept="image/png,image/jpeg,image/webp"
+            >
+
+            <button id="upload-fan-art" class="btn-quiz">
+                UPLOAD FAN ART
+            </button>
+
+            <p id="upload-status"></p>
+
+        </div>
+
+
+        <div id="fan-art-gallery" class="fan-art-gallery">
+            <p>Loading fan arts...</p>
+        </div>
+
+    </section>
+
+
     <!-- SECTION 6: CREDITS -->
     <section id="credits" class="seccion credits">
 
@@ -333,20 +372,357 @@
     </section>
 
 
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        document.querySelector('.volver').addEventListener('click', function(e) {
 
-            e.preventDefault();
+        const SUPABASE_URL =
+            "https://lzvumbdrcmeutitqqxal.supabase.co";
 
-            const link = this.href;
+        const SUPABASE_KEY =
+            "TU_PUBLISHABLE_KEY_AQUI";
 
-            document.body.classList.add('fade-out');
 
-            setTimeout(function() {
-                window.location = link;
-            }, 500);
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        // =========================
+        // UPLOAD FAN ART
+        // =========================
+
+        const uploadButton =
+            document.getElementById("upload-fan-art");
+
+        const usernameInput =
+            document.getElementById("fan-username");
+
+        const imageInput =
+            document.getElementById("fan-image");
+
+        const uploadStatus =
+            document.getElementById("upload-status");
+
+
+        uploadButton.addEventListener("click", async () => {
+
+            const username =
+                usernameInput.value.trim();
+
+            const file =
+                imageInput.files[0];
+
+
+            if (!username) {
+
+                uploadStatus.textContent =
+                    "Please enter your username.";
+
+                return;
+            }
+
+
+            if (!file) {
+
+                uploadStatus.textContent =
+                    "Please select an image.";
+
+                return;
+            }
+
+
+            // Maximum file size: 10 MB
+            if (file.size > 10 * 1024 * 1024) {
+
+                uploadStatus.textContent =
+                    "Image must be smaller than 10 MB.";
+
+                return;
+            }
+
+
+            uploadButton.disabled = true;
+
+            uploadStatus.textContent =
+                "Uploading...";
+
+
+            try {
+
+                // Create unique file name
+                const fileExtension =
+                    file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+
+                const fileName =
+                    Date.now() +
+                    "-" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2) +
+                    "." +
+                    fileExtension;
+
+
+                // Upload image
+                const {
+                    error: uploadError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from("fan-arts")
+                        .upload(
+                            fileName,
+                            file
+                        );
+
+
+                if (uploadError) {
+
+                    throw uploadError;
+
+                }
+
+
+                // Get public URL
+                const {
+                    data: publicUrlData
+                } =
+                    supabaseClient
+                        .storage
+                        .from("fan-arts")
+                        .getPublicUrl(
+                            fileName
+                        );
+
+
+                const imageUrl =
+                    publicUrlData.publicUrl;
+
+
+                // Save database entry
+                const {
+                    error: databaseError
+                } =
+                    await supabaseClient
+                        .from("fan_arts")
+                        .insert({
+
+                            username:
+                                username,
+
+                            image_url:
+                                imageUrl,
+
+                            "Approved":
+                                false
+
+                        });
+
+
+                if (databaseError) {
+
+                    throw databaseError;
+
+                }
+
+
+                uploadStatus.textContent =
+                    "Fan art submitted! It will appear after approval.";
+
+
+                usernameInput.value = "";
+
+                imageInput.value = "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Fan art upload error:",
+                    error
+                );
+
+
+                uploadStatus.textContent =
+                    "Something went wrong. Please try again.";
+
+            }
+
+
+            uploadButton.disabled = false;
 
         });
+
+
+        // =========================
+        // LOAD APPROVED FAN ARTS
+        // =========================
+
+        async function loadFanArts() {
+
+            const gallery =
+                document.getElementById(
+                    "fan-art-gallery"
+                );
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("fan_arts")
+                    .select(
+                        "username, image_url"
+                    )
+                    .eq(
+                        "Approved",
+                        true
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Fan art loading error:",
+                    error
+                );
+
+
+                gallery.innerHTML =
+                    "<p>Could not load fan arts.</p>";
+
+                return;
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                gallery.innerHTML =
+                    "<p>No fan arts yet. Be the first!</p>";
+
+                return;
+            }
+
+
+            gallery.innerHTML = "";
+
+
+            data.forEach(
+                fanArt => {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "fan-art-card";
+
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    image.src =
+                        fanArt.image_url;
+
+                    image.alt =
+                        "OKBABY fan art";
+
+                    image.loading =
+                        "lazy";
+
+
+                    const username =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    username.textContent =
+                        fanArt.username;
+
+
+                    card.appendChild(
+                        image
+                    );
+
+                    card.appendChild(
+                        username
+                    );
+
+
+                    gallery.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        // Load approved fan arts
+        // when the page opens
+
+        loadFanArts();
+
+
+        // =========================
+        // BACK BUTTON FADE
+        // =========================
+
+        document
+            .querySelector(".volver")
+            .addEventListener(
+                "click",
+                function(e) {
+
+                    e.preventDefault();
+
+                    const link =
+                        this.href;
+
+
+                    document.body
+                        .classList
+                        .add("fade-out");
+
+
+                    setTimeout(
+                        function() {
+
+                            window.location =
+                                link;
+
+                        },
+                        500
+                    );
+
+                }
+            );
+
     </script>
 
 </body>
